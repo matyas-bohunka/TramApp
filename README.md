@@ -8,7 +8,7 @@ A TramTire egy Android alkalmazás, amely a villamosok kerekének mérésére sz
 
 Az alkalmazás megnyitásakor a főképernyő fogadja Önt, ahol három gomb található egymás alatt:
 
-![Főképernyő](images/main_screen.png)  *(Kép helye a főképernyőről)*
+[Főképernyő] *(Kép helye a főképernyőről)*
 
 1.  **Új mérés:** Új mérés indításához kattintson erre a gombra.
 2.  **Mérések:** A korábbi mérések listájának megtekintéséhez kattintson erre a gombra.
@@ -18,7 +18,7 @@ Az alkalmazás megnyitásakor a főképernyő fogadja Önt, ahol három gomb tal
 
 Az "Új mérés" gombra kattintva a következő képernyő jelenik meg:
 
-![Új mérés képernyő](images/new_meres_screen.png)  *(Kép helye az "Új mérés" képernyőről)*
+[Új mérés képernyő].  *(Kép helye az "Új mérés" képernyőről)*
 
 1.  **Válassz jármű típust:**  Egy legördülő listából választhatja ki a villamos típusát. Ha még nincs járműtípus felvéve, akkor először vegyen fel egyet az "Új jármű felvétele" menüpontban.
 2.  **Pályaszám:** Írja be a villamos pályaszámát. Ez betűket és számokat is tartalmazhat.
@@ -30,7 +30,7 @@ Az "Új mérés" gombra kattintva a következő képernyő jelenik meg:
 
 Az "Ok" gombra kattintás után a "Kerékmérés" képernyő jelenik meg, amely a kiválasztott villamostípus tengelyeit és kerekeit mutatja:
 
-![Kerékmérés képernyő](images/kerekmérés_screen.png)  *(Kép helye a "Kerékmérés" képernyőről)*
+[Kerékmérés képernyő]  *(Kép helye a "Kerékmérés" képernyőről)*
 
 *   **Tengelyek:** A képernyő közepén vízszintes vonalak jelzik a tengelyeket. A vonalak felett a tengely száma látható.
 *   **Kerekek:** Minden tengely mellett két gomb található, amelyek a kerekek számát jelzik. Bal oldalon a páratlan számú, jobb oldalon a páros számú kerekek találhatók. Például az első tengely bal oldali kereke az 1. kerék, a jobb oldali a 2. kerék, a második tengely bal oldali kereke a 3. kerék, és így tovább.
@@ -50,7 +50,7 @@ Az "Ok" gombra kattintás után a "Kerékmérés" képernyő jelenik meg, amely 
 
 A főképernyőn a "Mérések" gombra kattintva a korábbi mérések listája jelenik meg:
 
-![Mérések képernyő](images/meresek_screen.png)  *(Kép helye a "Mérések" képernyőről)*
+[Mérések képernyő]  *(Kép helye a "Mérések" képernyőről)*
 
 *   **Mérés gombok:** A képernyőn gombok listája található, amelyek a korábbi méréseket jelzik. A gombok neve a villamos pályaszáma és a mérés dátuma.
 *   **Görgethető lista:** A lista görgethető, ha sok mérés van rögzítve.
@@ -61,7 +61,7 @@ A főképernyőn a "Mérések" gombra kattintva a korábbi mérések listája je
 
 Egy mérés gombra kattintva a "Mérések" képernyőn a mérés részletei jelennek meg:
 
-![Mérés részletei képernyő](images/meres_reszletei_screen.png)  *(Kép helye a "Mérés részletei" képernyőről)*
+[Mérés részletei képernyő].  *(Kép helye a "Mérés részletei" képernyőről)*
 
 *   **Mérés adatai:** A képernyőn tengelyenként és kerékenként láthatók a mért értékek, a kerék száma, és a tengely száma.
 *   **Mégse gomb:** A "Mégse" gombra kattintva visszatérhet a "Mérések" képernyőre.
@@ -71,7 +71,7 @@ Egy mérés gombra kattintva a "Mérések" képernyőn a mérés részletei jele
 
 A főképernyőn az "Új jármű felvétele" gombra kattintva az új villamostípus felvételéhez szükséges képernyő jelenik meg:
 
-![Új jármű felvétele képernyő](images/uj_jarmu_screen.png)  *(Kép helye az "Új jármű felvétele" képernyőről)*
+[Új jármű felvétele képernyő]  *(Kép helye az "Új jármű felvétele" képernyőről)*
 
 1.  **Jármű típusa:** Írja be az új villamos típusának nevét.
 2.  **Tengelyek száma:** Írja be az új villamostípus tengelyeinek számát (számmal).
