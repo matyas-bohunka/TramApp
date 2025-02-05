@@ -37,7 +37,7 @@ class MeasurementDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMeasurementDetailBinding
     private var measurementId: Long = -1
-    private lateinit var database: AppDatabase // Declare database variable
+    private lateinit var database: AppDatabase
     private lateinit var measurementDao: MeasurementDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +45,7 @@ class MeasurementDetailActivity : AppCompatActivity() {
         binding = ActivityMeasurementDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        database = AppDatabase.getDatabase(this, lifecycleScope) // Initialize database and pass lifecycleScope
+        database = AppDatabase.getDatabase(this, lifecycleScope)
         measurementDao = database.measurementDao()
 
         measurementId = intent.getLongExtra("MEASUREMENT_ID", -1)
@@ -61,23 +61,12 @@ class MeasurementDetailActivity : AppCompatActivity() {
             finish()
         }
 
-        binding.buttonExportExcel.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                openFilePickerForExcel()
-            } else {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), EXCEL_EXPORT_PERMISSION_CODE)
-            }
+        binding.buttonExportExcel.setOnClickListener { // Modified OnClickListener
+            openFilePickerForExcel() // Directly open file picker - no permission check needed
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == EXCEL_EXPORT_PERMISSION_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            openFilePickerForExcel()
-        } else {
-            Snackbar.make(binding.root, getString(R.string.excel_export_permission_required), Snackbar.LENGTH_SHORT).show()
-        }
-    }
+    // Removed onRequestPermissionsResult function
 
     private fun loadMeasurementDetails() {
         lifecycleScope.launch(Dispatchers.IO) {
@@ -112,7 +101,7 @@ class MeasurementDetailActivity : AppCompatActivity() {
         }
         binding.containerMeasurementDetails.addView(headerTextView)
 
-        val groupedWheelMeasurements = measurementWithDetails.wheelMeasurements.groupBy { (it.wheelNumber - 1) / 2 + 1 } // Group by axle number
+        val groupedWheelMeasurements = measurementWithDetails.wheelMeasurements.groupBy { (it.wheelNumber - 1) / 2 + 1 }
 
         for (axleNumber in 1..(groupedWheelMeasurements.keys.maxOrNull() ?: 0)) {
             val axleLayout = LinearLayout(this).apply {
@@ -201,26 +190,26 @@ class MeasurementDetailActivity : AppCompatActivity() {
                 try {
                     val workbook = XSSFWorkbook()
                     val sheet = workbook.createSheet("Mérés")
-                    val dateFormatExcel = SimpleDateFormat("yyyy.MM.dd.", Locale.getDefault())
 
-                    // Headers Row (First Row)
-                    val headerRow = sheet.createRow(0)
-                    headerRow.createCell(0).setCellValue("Kerék Száma")
-                    headerRow.createCell(1).setCellValue("Tengely Száma")
-                    headerRow.createCell(2).setCellValue("Mért érték")
-                    headerRow.createCell(3).setCellValue("Segéd érték 15.69")
-                    headerRow.createCell(4).setCellValue("Segéd érték 200")
-                    headerRow.createCell(5).setCellValue("Eredmény")
-                    headerRow.createCell(6).setCellValue("Pálya Szám: " +details.measurement.trackNumber)
-                    headerRow.createCell(7).setCellValue("Dátum: " +dateFormatExcel.format(Date(details.measurement.date)))
+                    var rowNum = 0
 
+                    // Header Row 1: Train Track Number
+                    val trainNumberHeaderRow = sheet.createRow(rowNum++)
+                    trainNumberHeaderRow.createCell(0).setCellValue("Tram Track Number:")
+                    trainNumberHeaderRow.createCell(1).setCellValue(details.measurement.trackNumber)
 
+                    // Header Row 2: Column Headers
+                    val columnHeadersRow = sheet.createRow(rowNum++)
+                    columnHeadersRow.createCell(0).setCellValue("Wheel Number")
+                    columnHeadersRow.createCell(1).setCellValue("Axis Number")
+                    columnHeadersRow.createCell(2).setCellValue("Measured Value")
+                    columnHeadersRow.createCell(3).setCellValue("Fixed Value 15.69")
+                    columnHeadersRow.createCell(4).setCellValue("Fixed Value 200")
+                    columnHeadersRow.createCell(5).setCellValue("Formula Result")
 
 
                     details.wheelMeasurements.sortedBy { it.wheelNumber }.forEachIndexed { index, wheelMeasurement ->
-                        val rowNum = index + 1 // Start writing data from row 2 onwards, for each wheel
-
-                        val dataRow = sheet.createRow(rowNum)
+                        val dataRow = sheet.createRow(rowNum++)
 
                         // Wheel Number (Column A)
                         dataRow.createCell(0).setCellValue(wheelMeasurement.wheelNumber.toDouble())
@@ -240,9 +229,9 @@ class MeasurementDetailActivity : AppCompatActivity() {
 
                         // Formula (Column F)
                         val cell = dataRow.createCell(5)
-                        val measuredValueCellRef = "C" + (rowNum + 1) // e.g., "C2", "C3", etc.
-                        val fixedValue1CellRef = "D" + (rowNum + 1) // e.g., "D2", "D3", etc.
-                        val fixedValue2CellRef = "E" + (rowNum + 1) // e.g., "E2", "E3", etc.
+                        val measuredValueCellRef = "C" + (dataRow.rowNum)
+                        val fixedValue1CellRef = "D" + (dataRow.rowNum)
+                        val fixedValue2CellRef = "E" + (dataRow.rowNum)
 
                         cell.cellFormula = "(((${fixedValue1CellRef}+${measuredValueCellRef})^2)+(${fixedValue2CellRef}^2)/4)/(${fixedValue1CellRef}+${measuredValueCellRef})"
                     }
@@ -280,7 +269,6 @@ class MeasurementDetailActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val EXCEL_EXPORT_PERMISSION_CODE = 1001
         private const val CREATE_EXCEL_FILE_REQUEST_CODE = 1002
     }
 }
